@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 function ArtisansListItem ({ artisan }) {
   console.log(artisan)
   const { name, description, profilePicture } = artisan.attributes
+  console.log(artisan)
   const imgUrl = 'http://localhost:1337' + profilePicture?.data?.attributes?.url
   return (
     <div className='card'>
