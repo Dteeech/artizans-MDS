@@ -12,4 +12,4 @@
 
 ### packages
   #### Linter
-    StandardJs
+  StandardJs
