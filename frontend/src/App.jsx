@@ -1,24 +1,26 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import ArtisansList from './components/artisans/ArtisansList'
-
-function App() {
-  // On prépare l'état local (la variable) qui va stocker les composants
-  const [artisans, setArtisans] = useState([])
-
-  useEffect(() => {
-    // On récupère les données
-    const getData = async () => {
-      const response = await fetch('http://localhost:1337/api/artisans?populate=*')
-      const responseData = await response.json()
-      setArtisans(responseData.data)
-    }
-    getData()
-  }, [])
-
+import Router from './navigation/Router'
+import Header from './components/header/Header'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+function App () {
   return (
     <>
-      <ArtisansList artisans={artisans} />
+      <Header />
+      <Router />
+      <ToastContainer
+        position='bottom-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='dark'
+
+      />
     </>
   )
 }

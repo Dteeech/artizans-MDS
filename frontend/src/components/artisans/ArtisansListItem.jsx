@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types'
 
 function ArtisansListItem ({ artisan }) {
-  console.log(artisan)
-  const { name, description, profilePicture } = artisan.attributes
-  console.log(artisan)
-  const imgUrl = 'http://localhost:1337' + profilePicture?.data?.attributes?.url
+  const { name, description, slug, profilePicture } = artisan.attributes
+
+  const imgUrl = process.env.REACT_APP_IMAGES_URL + profilePicture?.data?.attributes?.url
   return (
-    <div className='card'>
+    <a className='card' href={`/artisans/${slug}`}>
       <img
         src={imgUrl}
         className='profile-picture'
@@ -15,7 +14,7 @@ function ArtisansListItem ({ artisan }) {
         <h3>{name}</h3>
         <p>{description}</p>
       </div>
-    </div>
+    </a>
   )
 }
 
