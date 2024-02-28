@@ -1,10 +1,10 @@
 # Artizans - projet fil rouge réalisé lors du bachelor concepteur développeur d'applications
 ## Table des matières
-[Choix des technos](#Choix-des-technos)
-[description du projet](#description-du-projet)
-  [Linter](#Linter)
+1. [Choix des technos](#Choix-des-technos)
+2. [description du projet](#description-du-projet)
+  -[Linter](#Linter)
 
- [packages](#packages)
+ 3. [packages](#packages)
 
 ### Choix des technos
 
