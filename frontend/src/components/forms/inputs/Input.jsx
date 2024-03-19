@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-function Input ({ label, name, value, placeholder, onChange, error, type = 'text' }) {
+function Input({ label, name, value, placeholder, onChange, error, type = 'text' }) {
   return (
     <div style={{ gap: 0 }}>
       <label>
@@ -7,8 +7,8 @@ function Input ({ label, name, value, placeholder, onChange, error, type = 'text
         <input type={type} name={name} value={value} onChange={onChange} placeholder={placeholder} />
       </label>
       {
-                error && <p style={{ color: 'red' }}>{error}</p>
-            }
+        error && <p style={{ color: 'red' }}>{error}</p>
+      }
     </div>
   )
 }
