@@ -1,36 +1,28 @@
 import PropTypes from 'prop-types'
 import ProductsListItem from './ProductsListItem'
-import '../products/ProductsList.css'
 /**
  *
  * @param {Array} products
- * @returns {React.component} ProductsList
+ * @returns {React.Component} ProductList
  */
 function ProductsList ({ products }) {
-  if (!products || products.length < 1) {
-    return 'No data'
-  }
-
+  if (!products || products.length < 1) return 'No data'
   return (
-    <>
-      <div className='list-container'>
-        <h2>product list</h2>
-        <div className='list'>
-          {
-                        products.map(product => {
-                          return (
-                            <ProductsListItem key={product.id} product={product} />
-                          )
-                        })
-                    }
-        </div>
+    <div className='flex flex-col'>
+      <h2 className='text-4xl py-6'>Products List</h2>
+      <div className='flex flex-row flex-wrap gap-4'>
+        {
+        products.map(product => (
+          <ProductsListItem key={product.id} product={product} />
+        ))
+      }
       </div>
-    </>
-
+    </div>
   )
 }
 
 ProductsList.propTypes = {
   products: PropTypes.arrayOf(PropTypes.object)
 }
+
 export default ProductsList

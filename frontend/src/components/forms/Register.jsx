@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import Button from './buttons/Button'
-import Input from './inputs/Input'
+import { Button, Input } from '@nextui-org/react'
 
 import './Form.css'
 import { ValidateRegisterForm } from '../../services/formAuthValidation'

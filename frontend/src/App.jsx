@@ -3,24 +3,31 @@ import Router from './navigation/Router'
 import Header from './components/header/Header'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { AuthProvider } from './context/authContext'
+import { NextUIProvider } from '@nextui-org/react'
 function App () {
   return (
     <>
-      <Header />
-      <Router />
-      <ToastContainer
-        position='bottom-center'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='dark'
+      <NextUIProvider>
 
-      />
+        <AuthProvider>
+
+          <Header />
+          <Router />
+          <ToastContainer
+            position='bottom-center'
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='dark'
+          />
+        </AuthProvider>
+      </NextUIProvider>
     </>
   )
 }

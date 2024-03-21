@@ -1,19 +1,18 @@
 import { useNavigate } from 'react-router-dom'
-import Button from '../../components/forms/buttons/Button'
+import { useAuth } from '../../context/authContext'
 
 function Dashboard () {
   const navigate = useNavigate()
 
-  const logout = () => {
-    window.localStorage.removeItem('AUTH')
+  const { logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
     navigate('/authentication')
   }
   return (
     <>
       <h2>DASHBOARD</h2>
-      <Button onClick={logout}>
-        Déconnexion
-      </Button>
     </>
   )
 }

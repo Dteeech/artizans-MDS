@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-function Input({ label, name, value, placeholder, onChange, error, type = 'text' }) {
+function Input ({ label, name, value, placeholder, onChange, error, type = 'text' }) {
   return (
     <div style={{ gap: 0 }}>
       <label>

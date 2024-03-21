@@ -1,13 +1,10 @@
 import { Outlet, Navigate } from 'react-router-dom'
+import { useAuth } from '../context/authContext'
 function PrivateRoutes () {
-  const auth = window.localStorage.getItem('AUTH')
-  const authObject = JSON.parse(auth)
-
-  const token = authObject?.jwt
-  // valider le jwt
+  const { state: { jwt, user } } = useAuth()
 
   return (
-    token ? <Outlet /> : <Navigate to='/authentication' />
+    jwt && user ? <Outlet /> : <Navigate to='/authentication' />
   )
 }
 

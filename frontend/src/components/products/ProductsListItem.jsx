@@ -1,20 +1,36 @@
+import { Card, CardBody, CardHeader, CardFooter, Avatar } from '@nextui-org/react'
 import PropTypes from 'prop-types'
 
 function ProductsListItem ({ product }) {
-  const { name, description, images, price } = product.attributes
+  const { name, description, price, images, artisanImg } = product.attributes
   const imgUrl = process.env.REACT_APP_IMAGES_URL + images?.data[0]?.attributes?.url
+
   return (
-    <div className='card'>
-      <img
-        src={imgUrl}
-        className='product-picture'
-      />
-      <div className='card-body'>
-        <h3>{name}</h3>
+    <Card isPressable className='max-w-[350px] bg-primary-200'>
+      <CardHeader className='p-0'>
+        <img
+          src={imgUrl}
+        />
+      </CardHeader>
+      <CardBody className='flex flex-col gap-4 justify-between'>
+        <h3 className='font-semibold text-xl'>{name}</h3>
         <p>{description}</p>
-        <strong>{price} $</strong>
-      </div>
-    </div>
+        <p className='text-right'>{price} €</p>
+      </CardBody>
+      <CardFooter>
+
+        <Avatar
+          isBordered
+          as='button'
+          className='transition-transform'
+          color='secondary'
+          name='Jason Hughes'
+          size='sm'
+          src={artisanImg}
+        />
+      </CardFooter>
+
+    </Card>
   )
 }
 

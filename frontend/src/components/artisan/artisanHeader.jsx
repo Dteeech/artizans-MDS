@@ -6,12 +6,12 @@ function ArtisanHeader ({ attributes }) {
 
   return (
     <>
-      <div className='artisan-header'>
+      <div className='flex flex-row gap-4items-center justify-center'>
 
-        <div className='left-side'>
-          <img src={imgUrl} className='artisan-picture' />
+        <div className='flex flex-col'>
+          <img src={imgUrl} className='rounded-lg ' />
         </div>
-        <div className='right-side'>
+        <div className='flex flex-col'>
           <h1>{attributes.name}</h1>
           <h2>{attributes.description}</h2>
         </div>

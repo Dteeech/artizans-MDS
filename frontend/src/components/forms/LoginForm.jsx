@@ -1,19 +1,19 @@
-import Button from './buttons/Button'
-import Input from './inputs/Input'
+import { Button, Input } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { useLogin } from '../../hooks/Auth'
+import { useAuth } from '../../context/authContext'
 import { useNavigate } from 'react-router-dom'
 
 import './Form.css'
 
 function LoginForm () {
   const [formData, setFormData] = useState({
-    identifier: 'jeanmich@gmail.com',
-    password: 'password'
+    identifier: '',
+    password: ''
 
   })
+
   const navigate = useNavigate()
-  const { response, error, login } = useLogin()
+  const { state: { user, jwt, error, isLoading }, login } = useAuth()
 
   const handleChange = (e) => {
     setFormData({
@@ -28,18 +28,20 @@ function LoginForm () {
   }
 
   useEffect(() => {
-    if (response && response.jwt) {
+    if (user && jwt) {
       navigate('/dashboard')
     }
-  }, [response])
+  }, [user, jwt])
 
   return (
 
     <>
 
-      <form onSubmit={handleSubmit}>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <h2>Se connecter</h2>
         <Input
+          className='mb-4'
+          variant='underlined'
           type='email'
           label='email'
           name='identifier'
@@ -48,6 +50,8 @@ function LoginForm () {
           onChange={handleChange}
         />
         <Input
+          className='mb-4'
+          variant='underlined'
           type='password'
           label='Mot de passe'
           name='password'
@@ -56,10 +60,12 @@ function LoginForm () {
           onChange={handleChange}
         />
         {
-                    error && <p style={{ color: 'red' }}>{error}</p>
-                }
+          error && <p style={{ color: 'red' }}>{error}</p>
+        }
         <Button
+          isLoading={isLoading}
           type='submit'
+          variant='flat'
         >
           Se connecter
         </Button>
