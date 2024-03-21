@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { loginApi } from '../services/api'
+import { loginApi, registerApi } from '../services/api'
 import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
@@ -64,6 +64,26 @@ const authReducer = (prevState, action) => {
 // Chainon manquant entre une classe et un objet,
 // va permettre de lister tout un tas de méthodes pour les rendres disponibles un peu partout
 const AuthFactory = (dispatch) => ({
+  // ajout de la méthode register
+  register: async (credentials) => {
+    dispatch({ type: actionTypes.LOADING })
+    try {
+      const result = await registerApi(credentials)
+      dispatch({
+        type: actionTypes.REGISTER,
+        data: {
+          user: result.user,
+          jwt: result.jwt
+        }
+      })
+    } catch (error) {
+      toast.error("Erreur lors de l'enregistrement")
+      dispatch({
+        type: actionTypes.ERROR,
+        data: error
+      })
+    }
+  },
   // credential = { identifier, password }
   login: async (credentials) => {
     dispatch({ type: actionTypes.LOADING })

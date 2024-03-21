@@ -1,22 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Input } from '@nextui-org/react'
-
+import { useNavigate } from 'react-router-dom'
 import './Form.css'
 import { ValidateRegisterForm } from '../../services/formAuthValidation'
+import { useAuth } from '../../context/authContext'
 
 function RegisterForm () {
   // Version noob
   // const [firstName, setFirstName] = useState('')
   // const [lastName, setLastName] = useState('')
 
-  const [errors, setErrors] = useState({
-    firstName: null,
-    lastName: null,
-    username: null,
-    email: null,
-    password: null
-  })
-
+  const navigate = useNavigate()
+  const { state: { user, jwt, error, isLoading }, register } = useAuth()
   const [formData, setFormData] = useState({
     firstName: 'isaac',
     lastName: 'marshall',
@@ -34,13 +29,14 @@ function RegisterForm () {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const _errors = ValidateRegisterForm(formData)
-    if (errors) {
-      setErrors(_errors)
-    } else {
-      window.alert(`Formulaire soumis: ${formData.firstName} ${formData.lastName}`)
-    }
+    register(formData)
   }
+
+  useEffect(() => {
+    if (user && jwt) {
+      navigate('/dashboard')
+    }
+  }, [user])
 
   return (
     <form onSubmit={handleSubmit} className='form-container'>
@@ -50,7 +46,7 @@ function RegisterForm () {
         placeholder='Entrez votre Nom...'
         value={formData.lastName}
         onChange={handleChange}
-        error={errors.lastName}
+
       />
       <Input
         name='firstName'
@@ -58,7 +54,7 @@ function RegisterForm () {
         placeholder='Entrez votre Prénom...'
         value={formData.firstName}
         onChange={handleChange}
-        error={errors.firstName}
+
       />
       <Input
         name='username'
@@ -81,7 +77,11 @@ function RegisterForm () {
         value={formData.password}
         onChange={handleChange}
       />
+      {
+          error && <p style={{ color: 'red' }}>{error}</p>
+      }
       <Button
+        isLoading={isLoading}
         type='submit'
       >
         s'enregistrer

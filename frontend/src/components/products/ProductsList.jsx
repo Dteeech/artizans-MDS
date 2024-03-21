@@ -10,7 +10,7 @@ function ProductsList ({ products }) {
   return (
     <div className='flex flex-col'>
       <h2 className='text-4xl py-6'>Products List</h2>
-      <div className='flex flex-row flex-wrap gap-4'>
+      <div className='flex flex-row flex-wrap justify-center gap-4'>
         {
         products.map(product => (
           <ProductsListItem key={product.id} product={product} />

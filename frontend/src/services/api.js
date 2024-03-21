@@ -18,4 +18,9 @@ const loginApi = async (credentials) => {
   return response?.data
 }
 
-export { loginApi }
+const registerApi = async (credentials) => {
+  const response = await axiosInstance.post('/auth/local/register', credentials)
+  return response?.data
+}
+
+export { loginApi, registerApi }
