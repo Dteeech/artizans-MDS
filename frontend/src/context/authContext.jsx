@@ -1,40 +1,39 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { loginApi, registerApi } from '../services/api'
+import { loginApi } from '../services/api'
 import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
+
 const actionTypes = {
-  LOGIN: 'LOGIN', // connecté avec succès
-  REGISTER: 'REGISTER', // inscrit plus connecté avec succès
-  LOGOUT: 'LOGOUT', // déconnecté
+  LOGIN: 'LOGIN', // Connecté avec succès
+  REGISTER: 'REGISTER', // Inscrit + connecté avec succès
+  LOGOUT: 'LOGOUT', // Déconnecté
   LOADING: 'LOADING', // Chargement
   ERROR: 'ERROR', // Erreur
-  RESET: 'RESET' // réinisialisation de l'état
+  RESET: 'RESET' // Réinitialisation de l'état
 }
 
 const initialState = {
   jwt: null,
   user: null,
-  isLoggedIn: false,
   loading: false,
+  isLoggedIn: false,
   error: null
 }
 
 /**
- *
- * @param prevState Etat precedent de l'action
- * @param action action pour mettre à jour l'état = { type, data? {jwt, user, error} }
+ * @param prevState Etat précédent l'action
+ * @param action Action pour mettre à jour l'état = { type, data? = { jwt, user, error } }
  */
-
 const authReducer = (prevState, action) => {
   switch (action.type) {
     case actionTypes.REGISTER:
     case actionTypes.LOGIN:
       return {
         jwt: action.data.jwt,
-        user: action.data.jwt,
-        loading: false,
+        user: action.data.user,
         isLoggedIn: true,
+        loading: false,
         error: null
       }
     case actionTypes.ERROR:
@@ -45,46 +44,21 @@ const authReducer = (prevState, action) => {
         isLoggedIn: false,
         error: action.data.error
       }
-
     case actionTypes.LOADING:
       return {
-        ...prevState,
+        ...prevState, // Recopie de l'état précédent
         loading: true
       }
-
     case actionTypes.RESET:
     case actionTypes.LOGOUT:
       return initialState
-
     default:
-      throw new Error(`unhandled action type : ${action.type}`)
+      throw new Error(`Unhandled action type : ${action.type}`)
   }
 }
 
-// Chainon manquant entre une classe et un objet,
-// va permettre de lister tout un tas de méthodes pour les rendres disponibles un peu partout
-const AuthFactory = (dispatch) => ({
-  // ajout de la méthode register
-  register: async (credentials) => {
-    dispatch({ type: actionTypes.LOADING })
-    try {
-      const result = await registerApi(credentials)
-      dispatch({
-        type: actionTypes.REGISTER,
-        data: {
-          user: result.user,
-          jwt: result.jwt
-        }
-      })
-    } catch (error) {
-      toast.error("Erreur lors de l'enregistrement")
-      dispatch({
-        type: actionTypes.ERROR,
-        data: error
-      })
-    }
-  },
-  // credential = { identifier, password }
+const authFactory = (dispatch) => ({
+  // credentials = { identifier, password }
   login: async (credentials) => {
     dispatch({ type: actionTypes.LOADING })
     try {
@@ -96,23 +70,27 @@ const AuthFactory = (dispatch) => ({
           jwt: result.jwt
         }
       })
-      // TOPDO terminer la méthode
     } catch (error) {
-      toast.error('mot de passe ou identifiant incorrect')
+      console.error(error)
+      toast.error('Identfiant ou mot de passe incorrect')
       dispatch({
         type: actionTypes.ERROR,
-        data: error
+        data: {
+          error: 'Identifiant ou mot de passe incorrect'
+        }
       })
     }
   },
   logout: () => {
     dispatch({ type: actionTypes.LOGOUT })
   }
+
 })
 
 const AuthProvider = ({ children }) => {
   const savedState = window.localStorage.getItem('AUTH')
   const _initialState = savedState ? JSON.parse(savedState) : initialState
+
   const [state, dispatch] = useReducer(authReducer, _initialState)
 
   useEffect(() => {
@@ -120,7 +98,7 @@ const AuthProvider = ({ children }) => {
   }, [state])
 
   return (
-    <AuthContext.Provider value={{ state, ...AuthFactory(dispatch) }}>
+    <AuthContext.Provider value={{ state, ...authFactory(dispatch) }}>
       {children}
     </AuthContext.Provider>
   )
@@ -128,8 +106,11 @@ const AuthProvider = ({ children }) => {
 
 const useAuth = () => {
   const context = useContext(AuthContext)
-  if (!context) throw new Error('useAuth must be use indide an <AuthProvider>')
+  if (!context) throw new Error('useAuth must be used inside an <AuthProvider>')
   return context
 }
 
-export { AuthProvider, useAuth }
+export {
+  AuthProvider,
+  useAuth
+}

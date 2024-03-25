@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Input } from '@nextui-org/react'
 import { useNavigate } from 'react-router-dom'
-import './Form.css'
-import { ValidateRegisterForm } from '../../services/formAuthValidation'
 import { useAuth } from '../../context/authContext'
 
 function RegisterForm () {

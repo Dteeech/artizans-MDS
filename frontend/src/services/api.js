@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   timeout: 10000,
   header: {
-    'Contenuset-type': 'application/json',
+    'Content-type': 'application/json',
     Accept: 'application/json'
   }
 })

@@ -6,7 +6,7 @@ function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const { state: { isLoggedIn, user }, logout } = useAuth()
-
+  console.log('user :', user)
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
@@ -64,8 +64,8 @@ function Header () {
                   />
                 </DropdownTrigger>
                 <DropdownMenu aria-label='Profile Actions' variant='flat'>
-                  <DropdownItem key='profile' className='h-14 gap-2'>
-                    <p className='font-semibold'>Signed in as</p>
+                  <DropdownItem key='profile' href='/profile' className='h-14 gap-2'>
+                    <p className='font-semibold'>Mon compte</p>
                     <p className='font-semibold'>{user.email}</p>
                   </DropdownItem>
                   <DropdownItem key='logout' color='danger' onPress={logout}>

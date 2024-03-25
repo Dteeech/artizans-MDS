@@ -10,6 +10,7 @@ import Artisan from '../pages/Artisan'
 import Auth from '../pages/Auth'
 import Dashboard from '../pages/protected/Dashboard'
 import PrivateRoutes from './privateRouteMiddleware'
+import Profile from '../pages/Profile'
 function Router () {
   return (
 
@@ -28,6 +29,7 @@ function Router () {
         <Route path='dashboard' element={<PrivateRoutes />}>
           <Route index element={<Dashboard />} />
         </Route>
+        <Route path='profile' element={<Profile />} />
       </Routes>
     </BrowserRouter>
 
