@@ -3,7 +3,7 @@ import { useFetch } from '../hooks/api'
 import ArtisanHeader from '../components/artisan/artisanHeader'
 import ProductsList from '../components/products/ProductsList'
 
-function Artisan () {
+function Artisan() {
   const { artisanSlug } = useParams()
 
   const { response, error, isLoading } = useFetch(` ${process.env.REACT_APP_API}/artisans?filters[slug][$eq]=${artisanSlug}&populate=*`)
@@ -19,12 +19,12 @@ function Artisan () {
     <>
       <ArtisanHeader attributes={response[0]?.attributes} />
       {
-                products
-                  ? (
-                    <ProductsList products={products} />
-                    )
-                  : <p> Aucun produit trouvé</p>
-            }
+        products
+          ? (
+            <ProductsList products={products} />
+          )
+          : <p> Aucun produit trouvé</p>
+      }
     </>
   )
 }

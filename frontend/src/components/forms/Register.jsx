@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Input } from '@nextui-org/react'
+import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/authContext'
 
@@ -17,6 +17,10 @@ function RegisterForm () {
     email: 'test@test.fr',
     password: 'testestest123456'
   })
+  const role = [
+    { value: 'user', label: 'Utilisateur' },
+    { value: 'artisan', label: 'Artisan' }
+  ]
 
   const handleChange = (e) => {
     setFormData({
@@ -75,8 +79,23 @@ function RegisterForm () {
         value={formData.password}
         onChange={handleChange}
       />
+      <Select
+        class='flex w-full flex-wrap md:flex-nowrap gap-4'
+        name='role'
+        label='choississez un role'
+        type='select'
+
+      >
+        {role.map((role) => (
+          <SelectItem
+            key={role.value} value={role.value}
+          >
+            {role.label}
+          </SelectItem>
+        ))}
+      </Select>
       {
-          error && <p style={{ color: 'red' }}>{error}</p>
+        error && <p style={{ color: 'red' }}>{error}</p>
       }
       <Button
         isLoading={isLoading}

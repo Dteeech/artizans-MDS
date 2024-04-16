@@ -1,5 +1,6 @@
+// context auth
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { loginApi } from '../services/api'
+import { loginApi, registerApi, updateMeApi } from '../services/api'
 import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
@@ -7,6 +8,7 @@ const AuthContext = createContext()
 const actionTypes = {
   LOGIN: 'LOGIN', // Connecté avec succès
   REGISTER: 'REGISTER', // Inscrit + connecté avec succès
+  UPDATE_ME: 'UPDATE_ME', // Mise à jour des données utilisateur
   LOGOUT: 'LOGOUT', // Déconnecté
   LOADING: 'LOADING', // Chargement
   ERROR: 'ERROR', // Erreur
@@ -16,6 +18,7 @@ const actionTypes = {
 const initialState = {
   jwt: null,
   user: null,
+  role: null,
   loading: false,
   isLoggedIn: false,
   error: null
@@ -32,6 +35,15 @@ const authReducer = (prevState, action) => {
       return {
         jwt: action.data.jwt,
         user: action.data.user,
+        isLoggedIn: true,
+        loading: false,
+        error: null
+      }
+    case actionTypes.UPDATE_ME:
+      return {
+        ...prevState,
+        user: action.data.user,
+        jwt: action.data.jwt,
         isLoggedIn: true,
         loading: false,
         error: null
@@ -81,8 +93,56 @@ const authFactory = (dispatch) => ({
       })
     }
   },
+  register: async (credentials) => {
+    dispatch({ type: actionTypes.LOADING })
+    try {
+      const result = await registerApi(credentials)
+      dispatch({
+        type: actionTypes.LOGIN,
+        data: {
+          user: result.user,
+          jwt: result.jwt
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      toast.error('Identfiant ou mot de passe incorrect')
+      dispatch({
+        type: actionTypes.ERROR,
+        data: {
+          error: 'Identifiant ou mot de passe incorrect'
+        }
+      })
+    }
+  },
+  updateMe: async (userInfos, userId, jwt) => {
+    dispatch({ type: actionTypes.LOADING })
+    try {
+      const result = await updateMeApi(userInfos, userId, jwt)
+      // Vérifiez si l'API a renvoyé des données utilisateur mises à jour
+      dispatch({
+        type: actionTypes.UPDATE_ME,
+        data: {
+          user: result.user
+        }
+      })
+      console.log('result dans le try du dispatch', result)
+      toast.success('Profil mis à jour avec succès !')
+      return result
+    } catch (error) {
+      console.error(error)
+      toast.error('Une erreur s\'est produite lors de la mise à jour du profil.')
+      dispatch({
+        type: actionTypes.ERROR,
+        data: {
+          error: 'Une erreur s\'est produite lors de la mise à jour du profil.'
+        }
+      })
+    }
+  },
   logout: () => {
     dispatch({ type: actionTypes.LOGOUT })
+    window.localStorage.removeItem('AUTH')
   }
 
 })

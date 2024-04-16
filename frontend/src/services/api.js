@@ -1,9 +1,10 @@
+// api.js
 import axios from 'axios'
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   timeout: 10000,
-  header: {
+  headers: {
     'Content-type': 'application/json',
     Accept: 'application/json'
   }
@@ -18,9 +19,32 @@ const loginApi = async (credentials) => {
   return response?.data
 }
 
+const getRole = (userId, jwt) => {
+  const response = axiosInstance.get(`/api/users-permissions/roles/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`
+    }
+  })
+  console.log(response?.data)
+  const _response = response?.data
+  return _response
+}
+
 const registerApi = async (credentials) => {
   const response = await axiosInstance.post('/auth/local/register', credentials)
   return response?.data
 }
 
-export { loginApi, registerApi }
+const updateMeApi = async (userInfos, userId, jwt) => {
+  const response = await axiosInstance.put(`/users/${userId}`, userInfos, {
+    headers: {
+      Authorization: `Bearer ${jwt}`
+    }
+  })
+  console.log(response?.data)
+
+  const _response = response?.data
+  return _response
+}
+
+export { loginApi, registerApi, updateMeApi, getRole }

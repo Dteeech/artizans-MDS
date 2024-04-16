@@ -2,13 +2,12 @@ import { Button, Input } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/authContext'
 import { useNavigate } from 'react-router-dom'
-
 import './Form.css'
 
 function LoginForm () {
   const [formData, setFormData] = useState({
-    identifier: '',
-    password: ''
+    identifier: 'test@test.fr',
+    password: 'password'
 
   })
 

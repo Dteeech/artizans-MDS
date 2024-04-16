@@ -20,17 +20,17 @@ function Auth () {
 
     <>
       {
-                isRegister
-                  ? <RegisterForm />
-                  : <LoginForm />
+        isRegister
+          ? <RegisterForm />
+          : <LoginForm />
 
-            }
+      }
       <a onClick={() => setIsRegister(!isRegister)}>
         {
-                    isRegister
-                      ? "J'ai déjà un compte"
-                      : "Je n'ai pas de compte"
-                }
+          isRegister
+            ? "J'ai déjà un compte"
+            : "Je n'ai pas de compte"
+        }
 
       </a>
     </>

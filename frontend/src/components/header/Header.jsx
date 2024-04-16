@@ -4,9 +4,8 @@ import { useState } from 'react'
 import { useAuth } from '../../context/authContext.jsx'
 function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
   const { state: { isLoggedIn, user }, logout } = useAuth()
-  console.log('user :', user)
+
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
@@ -15,8 +14,10 @@ function Header () {
           className='sm:hidden'
         />
         <NavbarBrand>
-          <AcmeLogo />
-          <p className='font-bold text-inherit'>ACME</p>
+          <Link className='text-black' Link href='/'>
+            <AcmeLogo />
+            <p className='font-bold text-inherit text-black'>ARTIZANS</p>
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
@@ -77,12 +78,10 @@ function Header () {
             )
           : (
             <NavbarContent justify='end'>
-              <NavbarItem className='hidden lg:flex'>
-                <Link href='#'>Login</Link>
-              </NavbarItem>
+
               <NavbarItem>
                 <Button as={Link} color='primary' href='/authentication' variant='flat'>
-                  Sign Up
+                  Login
                 </Button>
               </NavbarItem>
             </NavbarContent>
@@ -90,11 +89,7 @@ function Header () {
       }
 
       <NavbarMenu>
-        <NavbarMenuItem>
-          <Link Link href='/'>
-            Accueil
-          </Link>
-        </NavbarMenuItem>
+        <NavbarMenuItem />
         <NavbarMenuItem>
           <Link Link href='/services'>
             Services
