@@ -25,9 +25,8 @@ const getRole = (userId, jwt) => {
       Authorization: `Bearer ${jwt}`
     }
   })
-  console.log(response?.data)
-  const _response = response?.data
-  return _response
+
+  return response?.data
 }
 
 const registerApi = async (credentials) => {
@@ -42,9 +41,12 @@ const updateMeApi = async (userInfos, userId, jwt) => {
     }
   })
   console.log(response?.data)
-
-  const _response = response?.data
-  return _response
+  return response?.data
 }
 
-export { loginApi, registerApi, updateMeApi, getRole }
+const deleteUserApi = async (userId) => {
+  const response = await axiosInstance.delete(`/users/${userId}`)
+  console.log(userId)
+  return response?.data
+}
+export { loginApi, registerApi, updateMeApi, getRole, deleteUserApi }

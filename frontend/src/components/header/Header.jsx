@@ -2,6 +2,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Navba
 import { AcmeLogo } from './AcmeLogo.jsx'
 import { useState } from 'react'
 import { useAuth } from '../../context/authContext.jsx'
+
 function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { state: { isLoggedIn, user }, logout } = useAuth()
@@ -14,7 +15,7 @@ function Header () {
           className='sm:hidden'
         />
         <NavbarBrand>
-          <Link className='text-black' Link href='/'>
+          <Link className='text-black' href='/'>
             <AcmeLogo />
             <p className='font-bold text-inherit text-black'>ARTIZANS</p>
           </Link>
@@ -48,65 +49,59 @@ function Header () {
           </Link>
         </NavbarItem>
       </NavbarContent>
-      {
-        isLoggedIn
+
+      <NavbarContent as='div' justify='end'>
+        {isLoggedIn
           ? (
-            <NavbarContent as='div' justify='end'>
-              <Dropdown placement='bottom-end'>
-                <DropdownTrigger>
-                  <Avatar
-                    isBordered
-                    as='button'
-                    className='transition-transform'
-                    color='secondary'
-                    name='Jason Hughes'
-                    size='sm'
-                    src='https://i.pravatar.cc/150?u=a042581f4e29026704d'
-                  />
-                </DropdownTrigger>
-                <DropdownMenu aria-label='Profile Actions' variant='flat'>
-                  <DropdownItem key='profile' href='/profile' className='h-14 gap-2'>
-                    <p className='font-semibold'>Mon compte</p>
-                    <p className='font-semibold'>{user.email}</p>
-                  </DropdownItem>
-                  <DropdownItem key='logout' color='danger' onPress={logout}>
-                    Log Out
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </NavbarContent>
+            <Dropdown placement='bottom-end'>
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  as='button'
+                  className='transition-transform'
+                  color='secondary'
+                  name='Jason Hughes'
+                  size='sm'
+                  src='https://i.pravatar.cc/150?u=a042581f4e29026704d'
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label='Profile Actions' variant='flat'>
+                <DropdownItem key='profile' href='/profile' className='h-14 gap-2'>
+                  <p className='font-semibold'>Mon compte</p>
+                  <p className='font-semibold'>{isLoggedIn ? user.email : 'Non connecté'}</p>
+                </DropdownItem>
+                <DropdownItem key='logout' color='danger' onPress={logout}>
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
             )
           : (
-            <NavbarContent justify='end'>
-
-              <NavbarItem>
-                <Button as={Link} color='primary' href='/authentication' variant='flat'>
-                  Login
-                </Button>
-              </NavbarItem>
-            </NavbarContent>
-            )
-      }
+            <Button as={Link} color='primary' href='/authentication' variant='flat'>
+              Login
+            </Button>
+            )}
+      </NavbarContent>
 
       <NavbarMenu>
         <NavbarMenuItem />
         <NavbarMenuItem>
-          <Link Link href='/services'>
+          <Link href='/services'>
             Services
           </Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link Link href='/about'>
+          <Link href='/about'>
             About
           </Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link Link href='/artisans'>
+          <Link href='/artisans'>
             Artisans
           </Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link Link href='/contact'>
+          <Link href='/contact'>
             Contact
           </Link>
         </NavbarMenuItem>

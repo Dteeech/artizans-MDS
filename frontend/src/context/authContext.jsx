@@ -1,6 +1,6 @@
 // context auth
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { loginApi, registerApi, updateMeApi } from '../services/api'
+import { deleteUserApi, loginApi, registerApi, updateMeApi } from '../services/api'
 import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
@@ -9,6 +9,7 @@ const actionTypes = {
   LOGIN: 'LOGIN', // Connecté avec succès
   REGISTER: 'REGISTER', // Inscrit + connecté avec succès
   UPDATE_ME: 'UPDATE_ME', // Mise à jour des données utilisateur
+  DELETE_USER: 'DELETE_USER',
   LOGOUT: 'LOGOUT', // Déconnecté
   LOADING: 'LOADING', // Chargement
   ERROR: 'ERROR', // Erreur
@@ -41,12 +42,13 @@ const authReducer = (prevState, action) => {
       }
     case actionTypes.UPDATE_ME:
       return {
-        ...prevState,
         user: action.data.user,
         jwt: action.data.jwt,
-        isLoggedIn: true,
-        loading: false,
-        error: null
+        isLoggedIn: false
+      }
+    case actionTypes.DELETE_USER:
+      return {
+        ...initialState
       }
     case actionTypes.ERROR:
       return {
@@ -115,18 +117,20 @@ const authFactory = (dispatch) => ({
       })
     }
   },
-  updateMe: async (userInfos, userId, jwt) => {
+  updateMe: async (userInfos, userId, jwt) => { // Ajoutez state en tant que paramètre
     dispatch({ type: actionTypes.LOADING })
     try {
       const result = await updateMeApi(userInfos, userId, jwt)
-      // Vérifiez si l'API a renvoyé des données utilisateur mises à jour
+
+      // Mettre à jour le JWT dans le state du contexte
       dispatch({
         type: actionTypes.UPDATE_ME,
         data: {
-          user: result.user
+          user: result.user // Nouvelles informations utilisateur
         }
       })
-      console.log('result dans le try du dispatch', result)
+      // Stocker le nouveau JWT dans le localStorage
+
       toast.success('Profil mis à jour avec succès !')
       return result
     } catch (error) {
@@ -136,6 +140,22 @@ const authFactory = (dispatch) => ({
         type: actionTypes.ERROR,
         data: {
           error: 'Une erreur s\'est produite lors de la mise à jour du profil.'
+        }
+      })
+    }
+  },
+  deleteUser: async (userId) => {
+    dispatch({ type: actionTypes.LOADING })
+    try {
+      await deleteUserApi(userId)
+      dispatch({ type: actionTypes.DELETE_USER })
+      toast.success('Utilisateur supprimé avec succès !')
+    } catch (error) {
+      toast.error('Une erreur s\'est produite lors de la suppression de l\'utilisateur.')
+      dispatch({
+        type: actionTypes.ERROR,
+        data: {
+          error: 'Une erreur s\'est produite lors de la suppression de l\'utilisateur.'
         }
       })
     }

@@ -9,9 +9,7 @@ function App () {
   return (
     <>
       <NextUIProvider>
-
         <AuthProvider>
-
           <Header />
           <Router />
           <ToastContainer
