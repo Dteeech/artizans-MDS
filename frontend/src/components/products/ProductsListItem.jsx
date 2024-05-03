@@ -1,10 +1,10 @@
 import { Card, CardBody, CardHeader, CardFooter, Avatar } from '@nextui-org/react'
 import PropTypes from 'prop-types'
 
-function ProductsListItem ({ product }) {
-  const { name, description, price, images, artisanImg } = product.attributes
-  const imgUrl = process.env.REACT_APP_IMAGES_URL + images?.data[0]?.attributes?.url
+function ProductsListItem ({ product, artisanImg }) {
+  const { name, description, price, images } = product.attributes
 
+  const imgUrl = process.env.REACT_APP_IMAGES_URL + images?.data[0]?.attributes?.url
   return (
     <Card isPressable className='max-w-[350px] bg-primary-200'>
       <CardHeader className='p-0'>
@@ -35,7 +35,8 @@ function ProductsListItem ({ product }) {
 }
 
 ProductsListItem.propTypes = {
-  product: PropTypes.object.isRequired
+  product: PropTypes.object.isRequired,
+  artisanImg: PropTypes.string
 }
 
 export default ProductsListItem

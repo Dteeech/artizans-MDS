@@ -6,8 +6,8 @@ import './Form.css'
 
 function LoginForm () {
   const [formData, setFormData] = useState({
-    identifier: 'test@test.fr',
-    password: 'password'
+    identifier: 'julien@gmail.com',
+    password: 'Test123456'
 
   })
 

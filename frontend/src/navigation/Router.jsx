@@ -10,7 +10,7 @@ import Artisan from '../pages/Artisan'
 import Auth from '../pages/Auth'
 import Dashboard from '../pages/protected/Dashboard'
 import PrivateRoutes from './privateRouteMiddleware'
-import Profile from '../pages/protected/Profile'
+import Profile from '../pages/protected/Profile' 
 function Router () {
   return (
 

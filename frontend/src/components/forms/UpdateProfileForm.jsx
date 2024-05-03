@@ -6,7 +6,6 @@ import { toast } from 'react-toastify'
 function UpdateProfileForm () {
   const { state: { isLoggedIn, user, jwt }, updateMe, deleteUser } = useAuth()
   const [changeInfos, setChangeInfos] = useState(false)
-
   // Utilisation des données de l'utilisateur du contexte pour initialiser les valeurs du formulaire
   const [formData, setFormData] = useState({
     username: user ? user.username : '',
@@ -17,7 +16,6 @@ function UpdateProfileForm () {
     e.preventDefault()
     try {
       await updateMe(formData, user.id, jwt) // Attend la résolution de la promesse
-
       setChangeInfos(false) // Ici on tente de changer le state
       toast.success('Vos informations ont été mises à jour avec succès !')
     } catch (error) {

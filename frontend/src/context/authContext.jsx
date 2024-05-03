@@ -34,6 +34,7 @@ const authReducer = (prevState, action) => {
     case actionTypes.REGISTER:
     case actionTypes.LOGIN:
       return {
+
         jwt: action.data.jwt,
         user: action.data.user,
         isLoggedIn: true,

@@ -1,11 +1,33 @@
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem } from '@nextui-org/react'
 import { AcmeLogo } from './AcmeLogo.jsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/authContext.jsx'
 
 function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { state: { isLoggedIn, user }, logout } = useAuth()
+  const [profilePic, setProfilePic] = useState()
+  const [error, setError] = useState()
+  const [isLoading, setIsLoading] = useState()
+
+  useEffect(() => {
+    if (isLoggedIn && user.id) {
+      setIsLoading(true)
+      const fetchImageFromArtisan = async () => {
+        try {
+          const resProfilePic = await fetch(`${process.env.REACT_APP_API}/users/${user.id}?populate=artisan.profilePicture`)
+          const profilePicDataJson = await resProfilePic.json()
+          const url = profilePicDataJson.artisan?.profilePicture?.url
+          setProfilePic(url ? `${process.env.REACT_APP_BASE_URL}${url}` : undefined)
+        } catch (error) {
+          setError(error.message)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+      fetchImageFromArtisan()
+    }
+  }, [isLoggedIn]) // Ajoutez user.id pour recharger lorsque l'utilisateur change
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -48,6 +70,11 @@ function Header () {
             Contact
           </Link>
         </NavbarItem>
+        <NavbarItem>
+          <Link href='/dashboard'>
+            Dashboard
+          </Link>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent as='div' justify='end'>
@@ -62,7 +89,7 @@ function Header () {
                   color='secondary'
                   name='Jason Hughes'
                   size='sm'
-                  src='https://i.pravatar.cc/150?u=a042581f4e29026704d'
+                  src={profilePic}
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label='Profile Actions' variant='flat'>
