@@ -15,7 +15,7 @@ function Header () {
       setIsLoading(true)
       const fetchImageFromArtisan = async () => {
         try {
-          const resProfilePic = await fetch(`${process.env.REACT_APP_API}/users/${user.id}?populate=artisan.profilePicture`)
+          const resProfilePic = await fetch(`${process.env.REACT_APP_API_URL}/users/${user.id}?populate=artisan.profilePicture`)
           const profilePicDataJson = await resProfilePic.json()
           const url = profilePicDataJson.artisan?.profilePicture?.url
           setProfilePic(url ? `${process.env.REACT_APP_BASE_URL}${url}` : undefined)

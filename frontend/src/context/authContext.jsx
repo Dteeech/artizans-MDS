@@ -1,6 +1,5 @@
-// context auth
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { deleteUserApi, loginApi, registerApi, updateMeApi } from '../services/api'
+import { loginApi, registerApi, updateUserApi } from '../services/api'
 import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
@@ -8,18 +7,16 @@ const AuthContext = createContext()
 const actionTypes = {
   LOGIN: 'LOGIN', // Connecté avec succès
   REGISTER: 'REGISTER', // Inscrit + connecté avec succès
-  UPDATE_ME: 'UPDATE_ME', // Mise à jour des données utilisateur
-  DELETE_USER: 'DELETE_USER',
   LOGOUT: 'LOGOUT', // Déconnecté
   LOADING: 'LOADING', // Chargement
   ERROR: 'ERROR', // Erreur
-  RESET: 'RESET' // Réinitialisation de l'état
+  RESET: 'RESET', // Réinitialisation de l'état
+  UPDATE_USER: 'UPDATE_USER' // Mise à jour de l'utilisateur
 }
 
 const initialState = {
   jwt: null,
   user: null,
-  role: null,
   loading: false,
   isLoggedIn: false,
   error: null
@@ -34,22 +31,11 @@ const authReducer = (prevState, action) => {
     case actionTypes.REGISTER:
     case actionTypes.LOGIN:
       return {
-
         jwt: action.data.jwt,
         user: action.data.user,
         isLoggedIn: true,
         loading: false,
         error: null
-      }
-    case actionTypes.UPDATE_ME:
-      return {
-        user: action.data.user,
-        jwt: action.data.jwt,
-        isLoggedIn: false
-      }
-    case actionTypes.DELETE_USER:
-      return {
-        ...initialState
       }
     case actionTypes.ERROR:
       return {
@@ -67,11 +53,19 @@ const authReducer = (prevState, action) => {
     case actionTypes.RESET:
     case actionTypes.LOGOUT:
       return initialState
+    case actionTypes.UPDATE_USER: // Gérer la mise à jour de l'utilisateur
+      return {
+        ...prevState,
+        user: action.data.user,
+        loading: false,
+        error: null
+      }
     default:
       throw new Error(`Unhandled action type : ${action.type}`)
   }
 }
 
+// *
 const authFactory = (dispatch) => ({
   // credentials = { identifier, password }
   login: async (credentials) => {
@@ -96,12 +90,16 @@ const authFactory = (dispatch) => ({
       })
     }
   },
-  register: async (credentials) => {
+  logout: () => {
+    dispatch({ type: actionTypes.LOGOUT })
+  },
+  //* Ajout de register
+  register: async (userData) => {
     dispatch({ type: actionTypes.LOADING })
     try {
-      const result = await registerApi(credentials)
+      const result = await registerApi(userData)
       dispatch({
-        type: actionTypes.LOGIN,
+        type: actionTypes.REGISTER,
         data: {
           user: result.user,
           jwt: result.jwt
@@ -118,52 +116,29 @@ const authFactory = (dispatch) => ({
       })
     }
   },
-  updateMe: async (userInfos, userId, jwt) => { // Ajoutez state en tant que paramètre
+
+  //* Ajout de updateUser
+  updateUser: async (userData) => {
     dispatch({ type: actionTypes.LOADING })
     try {
-      const result = await updateMeApi(userInfos, userId, jwt)
-
-      // Mettre à jour le JWT dans le state du contexte
+      const result = await updateUserApi(userData) // Appeler updateUserApi
       dispatch({
-        type: actionTypes.UPDATE_ME,
+        type: actionTypes.UPDATE_USER,
         data: {
-          user: result.user // Nouvelles informations utilisateur
+          user: result.user,
+          jwt: result.jwt
         }
       })
-      // Stocker le nouveau JWT dans le localStorage
-
-      toast.success('Profil mis à jour avec succès !')
-      return result
     } catch (error) {
       console.error(error)
-      toast.error('Une erreur s\'est produite lors de la mise à jour du profil.')
+      toast.error("Erreur lors de la mise à jour de l'utilisateur")
       dispatch({
         type: actionTypes.ERROR,
         data: {
-          error: 'Une erreur s\'est produite lors de la mise à jour du profil.'
+          error: "Erreur lors de la mise à jour de l'utilisateur"
         }
       })
     }
-  },
-  deleteUser: async (userId) => {
-    dispatch({ type: actionTypes.LOADING })
-    try {
-      await deleteUserApi(userId)
-      dispatch({ type: actionTypes.DELETE_USER })
-      toast.success('Utilisateur supprimé avec succès !')
-    } catch (error) {
-      toast.error('Une erreur s\'est produite lors de la suppression de l\'utilisateur.')
-      dispatch({
-        type: actionTypes.ERROR,
-        data: {
-          error: 'Une erreur s\'est produite lors de la suppression de l\'utilisateur.'
-        }
-      })
-    }
-  },
-  logout: () => {
-    dispatch({ type: actionTypes.LOGOUT })
-    window.localStorage.removeItem('AUTH')
   }
 
 })

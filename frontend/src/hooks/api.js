@@ -1,29 +1,64 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
-const useFetch = (url) => {
-  const [response, setResponse] = useState(null) // null
-  const [error, setError] = useState(null) // null
+const useFetch = (endpoint) => {
+  const [response, setResponse] = useState()
+  const [error, setError] = useState()
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const getData = async () => {
       setIsLoading(true)
       try {
-        const _response = await fetch(url)
-        const _responseJson = await _response.json()
-        setResponse(_responseJson.data)
-        console.log(_responseJson.data)
+        const response = await axios.get(process.env.REACT_APP_API_URL + endpoint)
+        console.log(response)
+        setResponse(response.data.data)
         setIsLoading(false)
       } catch (error) {
-        console.log(error)
+        console.error(error)
         setError(error)
         setIsLoading(false)
       }
     }
     getData()
-  }, [url])
+  }, [endpoint])
 
   return { response, error, isLoading }
 }
 
-export { useFetch }
+const useFetchAuth = (endpoint) => {
+  const [response, setResponse] = useState()
+  const [error, setError] = useState()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const token = window.localStorage.getItem('AUTH')
+  const tokenJson = JSON.parse(token)
+  const jwt = tokenJson.jwt
+
+  useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true)
+      try {
+        const response = await axios.get(process.env.REACT_APP_API_URL + endpoint, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+          }
+        })
+        setResponse(response.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.error(error)
+        setError(error)
+        setIsLoading(false)
+      }
+    }
+    getData()
+  }, [endpoint])
+
+  return { response, error, isLoading }
+}
+export {
+  useFetch,
+  useFetchAuth
+}

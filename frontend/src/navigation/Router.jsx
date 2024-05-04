@@ -10,7 +10,9 @@ import Artisan from '../pages/Artisan'
 import Auth from '../pages/Auth'
 import Dashboard from '../pages/protected/Dashboard'
 import PrivateRoutes from './privateRouteMiddleware'
-import Profile from '../pages/protected/Profile' 
+import Profile from '../pages/protected/Profile'
+import CreateNewProduct from '../components/products/CreateNewProduct'
+import UpdateProduct from '../components/products/UpdateProduct'
 function Router () {
   return (
 
@@ -26,6 +28,8 @@ function Router () {
         <Route path='contact' element={<Contact />} />
         <Route path='services' element={<Services />} />
         <Route path='authentication' element={<Auth />} />
+        <Route path='create-product' element={<CreateNewProduct />} />
+        <Route path='update-product/:productId' element={<UpdateProduct />} />
         <Route path='dashboard' element={<PrivateRoutes />}>
           <Route index element={<Dashboard />} />
         </Route>

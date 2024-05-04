@@ -18,7 +18,7 @@ function Artisan () {
   useEffect(() => {
     const fetchArtisan = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API}/artisans?filters[slug][$eq]=${artisanSlug}&populate=profilePicture`)
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/artisans?filters[slug][$eq]=${artisanSlug}&populate=profilePicture`)
         const data = await response.json()
         if (response.ok) {
           setArtisan(data.data[0])
@@ -36,7 +36,7 @@ function Artisan () {
 
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API}/products?filters[artisan][slug][$eq]=${artisanSlug}&populate=*`)
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/products?filters[artisan][slug][$eq]=${artisanSlug}&populate=*`)
         const data = await response.json()
         if (response.ok) {
           setProducts(data.data)

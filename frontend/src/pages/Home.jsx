@@ -1,25 +1,10 @@
-// import ProductsList from '../components/products/ProductsList'
-import { useFetch } from '../hooks/api'
-import { toast } from 'react-toastify'
 import { Spinner } from '@nextui-org/react'
 import ProductsList from '../components/products/ProductsList'
-import { useEffect, useState } from 'react'
-function Home () {
-  const { response, error, isLoading } = useFetch(`${process.env.REACT_APP_API}/products?populate[0]=images&populate[1]=artisan.profilePicture&sort=price:asc`)
-  const { artisanImg, setArtisanImg } = useState()
+import { useFetch } from '../hooks/Api'
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const artisanImgJson = `${process.env.REACT_APP_API}${response?.data?.attributes?.artisan?.data?.formats?.url}`
-        setArtisanImg(artisanImgJson)
-        console.log(artisanImg)
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-    fetchData()
-  }, [response])
+function Home () {
+  const { response, isLoading, error } =
+  useFetch('/products?populate[0]=images&populate[1]=artisan.profilePicture&sort=price:asc')
 
   if (isLoading) {
     return (
@@ -28,15 +13,16 @@ function Home () {
       </div>
     )
   }
+
   if (error) {
-    return toast.error("Une erreur s'est produite")
+    return <h2>Une erreur s'est produite</h2>
   }
-  return response && (
-    <>
-      <div className='container '>
-        <ProductsList products={response} artisanImg={artisanImg} />
-      </div>
-    </>
+
+  return (
+    <div className='container mx-auto flex flex-col items-center justify-start'>
+      <h1 className='text-3xl font-semibold'>Home</h1>
+      <ProductsList products={response} />
+    </div>
   )
 }
 
