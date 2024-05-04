@@ -110,7 +110,7 @@ function Header () {
             </Button>
             )}
       </NavbarContent>
-      <Link to='/cart'>
+      <Link href='/cart'>
         <li>
           <CartIcon />
         </li>

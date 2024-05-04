@@ -5,8 +5,8 @@ function CartIcon () {
   const { state: { items } } = useCart()
   return (
     <div className='cart-icon relative'>
-      <RiShoppingCart2Line size={60} className='bg-white' />
-      <span className='badge absolute right-0 bottom-0 left-12 bg-primary-300 py-2 px-5 rounded-2xl font-bold'>{items.length}</span>
+      <RiShoppingCart2Line size={30} className='bg-white' />
+      <span className='badge absolute right-0 bottom-0 left-0 top-8 min-h-10 bg-primary-300 p-2 rounded-2xl font-bold'>{items.length}</span>
     </div>
   )
 }
