@@ -2,6 +2,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Navba
 import { AcmeLogo } from './AcmeLogo.jsx'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/authContext.jsx'
+import CartIcon from '../cart/CartIcon.jsx'
 
 function Header () {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -109,6 +110,11 @@ function Header () {
             </Button>
             )}
       </NavbarContent>
+      <Link to='/cart'>
+        <li>
+          <CartIcon />
+        </li>
+      </Link>
 
       <NavbarMenu>
         <NavbarMenuItem />

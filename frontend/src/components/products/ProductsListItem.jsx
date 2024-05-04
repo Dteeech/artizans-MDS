@@ -7,7 +7,7 @@ function ProductsListItem ({ product }) {
   const imgUrl = process.env.REACT_APP_IMAGES_URL + images?.data[0]?.attributes?.url
   const showArtisan = artisan && artisan.data && artisan.data.attributes && artisan?.data?.attributes?.profilePicture
   return (
-    <Card className='max-w-[400px] min-h-[600px] flex flex-col flex-grow'>
+    <Card isPressable className='max-w-[400px] min-h-[600px] flex flex-col flex-grow '>
       <CardHeader className='p-0'>
         <img
           src={imgUrl}

@@ -13,6 +13,7 @@ import PrivateRoutes from './privateRouteMiddleware'
 import Profile from '../pages/protected/Profile'
 import CreateNewProduct from '../components/products/CreateNewProduct'
 import UpdateProduct from '../components/products/UpdateProduct'
+import Cart from '../pages/Cart'
 function Router () {
   return (
 
@@ -34,6 +35,7 @@ function Router () {
           <Route index element={<Dashboard />} />
         </Route>
         <Route path='profile' element={<Profile />} />
+        <Route path='/cart' element={<Cart />} />
       </Routes>
     </BrowserRouter>
 
